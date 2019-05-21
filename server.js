@@ -13,6 +13,11 @@ app.get('/', (req, res)=>{
 io.on('connection', (socket)=>{
     // Exibe o id do usuario conectado ao socket.
     console.log('Nova coneção', socket.id)
+    socket.on('mensagens', (mensagem)=>{
+        console.log(mensagem)
+        // Broadcast envia mensagem para todos menos o proprio socket.
+        socket.broadcast.emit('mesangem', mensagem);
+    })
 })
 
 http.listen(3000, function(){

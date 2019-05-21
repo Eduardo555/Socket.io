@@ -5,8 +5,31 @@
     <body>
         <h1>Socket.io</h1>
         <script src="/socket.io/socket.io.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        
+        <div id="mensagens"></div>
+
+        <input type="text" />
+
         <script>
             const socket = io()
+            socket.on('connect', function(){
+            $("#mensagens").append('Conectado com id: ' + socket.id + '</br>');
+            // Enviando informacao para o servidor.
+            socket.emit('mensagens', 'EURECA Estou conectado' + socket.id);
+            })
+            // Exibir emensagem enviada pelo servidor.
+            socket.on('mesangem', function(msg){
+                $("#mensagens").append(msg + '/<br>');
+            })
+            $(function(){
+                $("input").keydown(function(key){
+                    if(key.keyCode === 13){
+                        socket.emit('mensagens', $(this).val());
+                        $(this).val('');
+                    }
+                })
+            })
         </script>
     </body>
 </html>
